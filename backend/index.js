@@ -1,24 +1,35 @@
-require('dotenv').config();
 const express = require('express');
 const app = express();
 
-const PORT = process.env.PORT || 3000;
-const BASE_URL = process.env.NGROK_URL || `http://localhost:${PORT}`;
+// If you have CORS requests from frontend
+const cors = require('cors');
+app.use(cors());
 
-app.get('/', (req, res) => {
-  res.send(`Hello, trading server is running at ${BASE_URL}!`);
+const PORT = process.env.PORT || 3000;
+
+// Example API endpoint
+app.get('/api/v1/coins', (req, res) => {
+  res.json({
+    BTCUSDT: {
+      ema7: 115799.73,
+      ema25: 115667.38,
+      ema99: 115892.65,
+      lastClose: 115968.56
+    },
+    SOLUSDT: {
+      ema7: 239.37,
+      ema25: 238.94,
+      ema99: 239.51,
+      lastClose: 239.78
+    }
+  });
 });
 
-// Example API route
-app.get('/api/v1/coins', (req, res) => {
-  const data = {
-    BTCUSDT: { price: 115968.56, volume: 102.2 },
-    ETHUSDT: { price: 3680.21, volume: 520.1 }
-  };
-  res.json(data);
+// Default root route
+app.get('/', (req, res) => {
+  res.send('Hello! Backend is running on Fly.io');
 });
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
-  console.log(`Accessible externally via: ${BASE_URL}`);
 });
