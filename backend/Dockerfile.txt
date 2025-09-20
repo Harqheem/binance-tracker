@@ -1,0 +1,20 @@
+# Use Node.js 18
+FROM node:18
+
+# Set working directory inside container
+WORKDIR /app
+
+# Copy package.json first to install dependencies
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the project
+COPY . .
+
+# Expose the port the app will run on
+EXPOSE 3000
+
+# Command to start the app
+CMD ["node", "index.js"]

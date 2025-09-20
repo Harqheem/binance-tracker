@@ -1,35 +1,39 @@
+// backend/index.js
 const express = require('express');
 const app = express();
 
-// If you have CORS requests from frontend
-const cors = require('cors');
-app.use(cors());
-
+// Use the port assigned by Fly.io
 const PORT = process.env.PORT || 3000;
 
-// Example API endpoint
-app.get('/api/v1/coins', (req, res) => {
-  res.json({
-    BTCUSDT: {
-      ema7: 115799.73,
-      ema25: 115667.38,
-      ema99: 115892.65,
-      lastClose: 115968.56
-    },
-    SOLUSDT: {
-      ema7: 239.37,
-      ema25: 238.94,
-      ema99: 239.51,
-      lastClose: 239.78
-    }
-  });
-});
+// Sample coin data
+const coins = {
+  WIFUSDT: {
+    ema7: 0.8978,
+    ema25: 0.8966,
+    lastClose: 0.9
+  },
+  BTCUSDT: {
+    ema7: 115799.72,
+    ema25: 115667.38,
+    lastClose: 115968.56
+  },
+  SOLUSDT: {
+    ema7: 239.37,
+    ema25: 238.94,
+    lastClose: 239.78
+  }
+};
 
-// Default root route
+// Define routes
 app.get('/', (req, res) => {
-  res.send('Hello! Backend is running on Fly.io');
+  res.send('Hello, trading backend is running!');
 });
 
-app.listen(PORT, () => {
+app.get('/api/v1/coins', (req, res) => {
+  res.json(coins);
+});
+
+// Listen on all network interfaces
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server listening on port ${PORT}`);
 });
