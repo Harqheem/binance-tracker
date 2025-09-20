@@ -1,0 +1,21 @@
+# Use Node 18
+FROM node:18-alpine
+
+# Create app directory
+WORKDIR /app
+
+# Copy backend first
+COPY backend/package*.json ./backend/
+RUN cd backend && npm install
+
+COPY backend ./backend
+COPY frontend ./frontend
+
+# Expose port
+EXPOSE 3000
+
+# Install serve to serve static frontend
+RUN npm install -g serve
+
+# Start both backend and frontend
+CMD sh -c "node backend/index.js & serve -s frontend -l 8080"
